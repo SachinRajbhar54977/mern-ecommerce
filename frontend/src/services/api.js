@@ -1,12 +1,11 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL:        '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   withCredentials: true,
   headers: { 'Content-Type': 'application/json' },
 });
 
-// Attach token from localStorage
 api.interceptors.request.use((config) => {
   const user = JSON.parse(localStorage.getItem('user') || 'null');
   if (user?.token) {
@@ -15,7 +14,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Global 401 handler
 api.interceptors.response.use(
   (res) => res,
   (err) => {
